@@ -1,123 +1,131 @@
-<p align="center">
-  <img src="assets/basicsr_xpixel_logo.png" height=120>
-</p>
+# ST-MambaIR
 
-## <div align="center"><b><a href="README.md">English</a> | <a href="README_CN.md">简体中文</a></b></div>
+Official code for **ST-MambaIR: Adaptive SuperToken State Space Modeling for Thermal Infrared Image Restoration**.
 
-<div align="center">
+ST-MambaIR is designed for thermal infrared image restoration under mixed degradations, including low-frequency non-uniformity, stripe artifacts, random noise, and weakened structural details. The model combines focal context modulation, SuperToken-guided state space modeling, and high-frequency residual refinement to balance global thermal consistency, local structure preservation, and computational efficiency.
 
-[![LICENSE](https://img.shields.io/github/license/xinntao/basicsr.svg)](https://github.com/xinntao/BasicSR/blob/master/LICENSE.txt)
-[![PyPI](https://img.shields.io/pypi/v/basicsr)](https://pypi.org/project/basicsr/)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/xinntao/BasicSR.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/xinntao/BasicSR/context:python)
-[![python lint](https://github.com/xinntao/BasicSR/actions/workflows/pylint.yml/badge.svg)](https://github.com/xinntao/BasicSR/blob/master/.github/workflows/pylint.yml)
-[![Publish-pip](https://github.com/xinntao/BasicSR/actions/workflows/publish-pip.yml/badge.svg)](https://github.com/xinntao/BasicSR/blob/master/.github/workflows/publish-pip.yml)
-[![gitee mirror](https://github.com/xinntao/BasicSR/actions/workflows/gitee-mirror.yml/badge.svg)](https://github.com/xinntao/BasicSR/blob/master/.github/workflows/gitee-mirror.yml)
+## Highlights
 
-</div>
+- **SuperToken-guided state space modeling**: dense pixel tokens are adaptively aggregated into compact region-level SuperTokens, enabling efficient global dependency modeling over content-aware infrared regions.
+- **Dual-granularity restoration**: a global SuperToken stream captures large-scale thermal distribution and non-uniformity, while a local pixel stream preserves fine-grained contours and textures.
+- **High-frequency residual refinement**: an additional refinement branch compensates weak edges and subtle thermal textures that may be smoothed during denoising.
+- **Thermal infrared evaluation**: experiments are conducted on HM-TIR, Rivadeneira2020, and WHT3H.
 
-<div align="center">
+## Method Overview
 
-⚡[**HowTo**](#-HOWTOs) **|** 🔧[**Installation**](docs/INSTALL.md) **|** 💻[**Training Commands**](docs/TrainTest.md) **|** 🐢[**DatasetPrepare**](docs/DatasetPreparation.md) **|** 🏰[**Model Zoo**](docs/ModelZoo.md)
+The restoration network follows a residual image restoration framework:
 
-📕[**中文解读文档**](https://github.com/XPixelGroup/BasicSR-docs) **|** 📊 [**Plot scripts**](scripts/plot) **|** 📝[Introduction](docs/introduction.md) **|** <a href="https://github.com/XPixelGroup/BasicSR/tree/master/colab"><img src="https://colab.research.google.com/assets/colab-badge.svg" height="18" alt="google colab logo"></a> **|** ⏳[TODO List](https://github.com/xinntao/BasicSR/projects) **|** ❓[FAQ](docs/FAQ.md)
-</div>
+1. A shallow convolution embeds the degraded thermal infrared image into feature space.
+2. Stacked SuperToken-guided State Space Blocks perform deep restoration.
+3. Each block uses focal context modulation, the SuperToken State-space Module, and high-frequency residual refinement.
+4. A lightweight reconstruction head predicts the residual image and adds it back to the degraded input.
 
-🚀 We add [BasicSR-Examples](https://github.com/xinntao/BasicSR-examples), which provides guidance and templates of using BasicSR as a python package. 🚀 <br>
-📢 **技术交流QQ群**：**320960100** &emsp; 入群答案：**互帮互助共同进步** <br>
-🧭 [入群二维码](#-contact) (QQ、微信) &emsp;&emsp; [入群指南 (腾讯文档)](https://docs.qq.com/doc/DYXBSUmxOT0xBZ05u) <br>
+## Repository Structure
 
----
+```text
+basicsr/archs/mambairv2_arch.py      # main MambaIRv2/ST-MambaIR architecture implementation
+basicsr/models/mambairv2_model.py    # training/testing model wrapper
+options/train/CUSTOM/                # custom training configurations
+scripts/                             # data preparation, evaluation, and utility scripts
+docs/                                # inherited framework documentation
+```
 
-BasicSR (**Basic** **S**uper **R**estoration) is an open-source **image and video restoration** toolbox based on PyTorch, such as super-resolution, denoise, deblurring, JPEG artifacts removal, *etc*.<br>
-BasicSR (**Basic** **S**uper **R**estoration) 是一个基于 PyTorch 的开源 图像视频复原工具箱, 比如 超分辨率, 去噪, 去模糊, 去 JPEG 压缩噪声等.
+## Installation
 
-🚩 **New Features/Updates**
+```bash
+conda create -n st-mambair python=3.10 -y
+conda activate st-mambair
+pip install -r requirements.txt
+python setup.py develop
+```
 
-- ✅ July 26, 2022. Add plot scripts 📊[Plot](scripts/plot).
-- ✅ May 9, 2022. BasicSR joins [XPixel](http://xpixel.group/).
-- ✅ Oct 5, 2021. Add **ECBSR training and testing** codes: [ECBSR](https://github.com/xindongzhang/ECBSR).
-  > ACMMM21: Edge-oriented Convolution Block for Real-time Super Resolution on Mobile Devices
-- ✅ Sep 2, 2021. Add **SwinIR training and testing** codes: [SwinIR](https://github.com/JingyunLiang/SwinIR) by [Jingyun Liang](https://github.com/JingyunLiang). More details are in [HOWTOs.md](docs/HOWTOs.md#how-to-train-swinir-sr)
-- ✅ Aug 5, 2021. Add NIQE, which produces the same results as MATLAB (both are 5.7296 for tests/data/baboon.png).
-- ✅ July 31, 2021. Add **bi-directional video super-resolution** codes: [**BasicVSR** and IconVSR](https://arxiv.org/abs/2012.02181).
-  > CVPR21: BasicVSR: The Search for Essential Components in Video Super-Resolution and Beyond
-- **[More](docs/history_updates.md)**
+Install the CUDA/PyTorch versions that match your local GPU environment before running training or testing.
 
----
+## Data Preparation
 
-If BasicSR helps your research or work, please help to ⭐ this repo or recommend it to your friends. Thanks😊 <br>
-Other recommended projects:<br>
-▶️ [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN): A practical algorithm for general image restoration<br>
-▶️ [GFPGAN](https://github.com/TencentARC/GFPGAN): A practical algorithm for real-world face restoration <br>
-▶️ [facexlib](https://github.com/xinntao/facexlib): A collection that provides useful face-relation functions.<br>
-▶️ [HandyView](https://github.com/xinntao/HandyView): A PyQt5-based image viewer that is handy for view and comparison. <br>
-▶️ [HandyFigure](https://github.com/xinntao/HandyFigure): Open source of paper figures <br>
-<sub>([ESRGAN](https://github.com/xinntao/ESRGAN), [EDVR](https://github.com/xinntao/EDVR), [DNI](https://github.com/xinntao/DNI), [SFTGAN](https://github.com/xinntao/SFTGAN))</sub>
-<sub>([HandyCrawler](https://github.com/xinntao/HandyCrawler), [HandyWriting](https://github.com/xinntao/HandyWriting))</sub>
+Organize paired degraded and clean infrared images as follows:
 
----
+```text
+datasets/
+  hm_tir/
+    train/
+      gt/
+      noise/
+    val/
+      gt/
+      noise/
+```
 
-## ⚡ HOWTOs
+The default training configuration expects paired images under:
 
-We provide simple pipelines to train/test/inference models for a quick start.
-These pipelines/commands cannot cover all the cases and more details are in the following sections.
+```text
+datasets/hm_tir/train/gt
+datasets/hm_tir/train/noise
+datasets/hm_tir/val/gt
+datasets/hm_tir/val/noise
+```
 
-| GAN                  |                                                |                                                        |          |                                                |                                                        |
-| :------------------- | :--------------------------------------------: | :----------------------------------------------------: | :------- | :--------------------------------------------: | :----------------------------------------------------: |
-| StyleGAN2            | [Train](docs/HOWTOs.md#How-to-train-StyleGAN2) | [Inference](docs/HOWTOs.md#How-to-inference-StyleGAN2) |          |                                                |                                                        |
-| **Face Restoration** |                                                |                                                        |          |                                                |                                                        |
-| DFDNet               |                       -                        |  [Inference](docs/HOWTOs.md#How-to-inference-DFDNet)   |          |                                                |                                                        |
-| **Super Resolution** |                                                |                                                        |          |                                                |                                                        |
-| ESRGAN               |                     *TODO*                     |                         *TODO*                         | SRGAN    |                     *TODO*                     |                         *TODO*                         |
-| EDSR                 |                     *TODO*                     |                         *TODO*                         | SRResNet |                     *TODO*                     |                         *TODO*                         |
-| RCAN                 |                     *TODO*                     |                         *TODO*                         | SwinIR   | [Train](docs/HOWTOs.md#how-to-train-swinir-sr) | [Inference](docs/HOWTOs.md#how-to-inference-swinir-sr) |
-| EDVR                 |                     *TODO*                     |                         *TODO*                         | DUF      |                       -                        |                         *TODO*                         |
-| BasicVSR             |                     *TODO*                     |                         *TODO*                         | TOF      |                       -                        |                         *TODO*                         |
-| **Deblurring**       |                                                |                                                        |          |                                                |                                                        |
-| DeblurGANv2          |                       -                        |                         *TODO*                         |          |                                                |                                                        |
-| **Denoise**          |                                                |                                                        |          |                                                |                                                        |
-| RIDNet               |                       -                        |                         *TODO*                         | CBDNet   |                       -                        |                         *TODO*                         |
+You can modify the dataset paths in `options/train/CUSTOM/*.yml` for HM-TIR, Rivadeneira2020, WHT3H, or your own thermal infrared dataset.
 
-## ✨ **Projects that use BasicSR**
+## Training
 
-- [**Real-ESRGAN**](https://github.com/xinntao/Real-ESRGAN): A practical algorithm for general image restoration
-- [**GFPGAN**](https://github.com/TencentARC/GFPGAN): A practical algorithm for real-world face restoration
+Example:
 
-If you use `BasicSR` in your open-source projects, welcome to contact me (by [email](#-contact) or opening an issue/pull request). I will add your projects to the above list 😊
+```bash
+python basicsr/train.py -opt options/train/CUSTOM/fm3_multipole_focalnet_b2_hf_residual_hmtir_20k.yml
+```
 
-## 📜 License and Acknowledgement
+The main configuration uses:
 
-This project is released under the [Apache 2.0 license](LICENSE.txt).<br>
-More details about **license** and **acknowledgement** are in [LICENSE](LICENSE/README.md).
+- `model_type: MambaIRv2Model`
+- `network_g.type: MambaIRv2`
+- `gt_size: 128`
+- `CharbonnierLoss`
+- single-GPU training by default
 
-## 🌏 Citations
+## Testing
 
-If BasicSR helps your research or work, please cite BasicSR.<br>
-The following is a BibTeX reference. The BibTeX entry requires the `url` LaTeX package.
+Use the BasicSR-style test entry after preparing a test option file and checkpoint:
 
-``` latex
-@misc{basicsr,
-  author =       {Xintao Wang and Liangbin Xie and Ke Yu and Kelvin C.K. Chan and Chen Change Loy and Chao Dong},
-  title =        {{BasicSR}: Open Source Image and Video Restoration Toolbox},
-  howpublished = {\url{https://github.com/XPixelGroup/BasicSR}},
-  year =         {2022}
+```bash
+python basicsr/test.py -opt path/to/test_config.yml
+```
+
+Set `path.pretrain_network_g` in the option file to the checkpoint that you want to evaluate.
+
+## Quantitative Results
+
+The paper reports the following thermal infrared restoration results:
+
+| Method | HM-TIR PSNR | HM-TIR SSIM | Rivadeneira2020 PSNR | Rivadeneira2020 SSIM | WHT3H PSNR | WHT3H SSIM |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| MambaIRv2 | 34.9303 | 0.9537 | 35.2861 | 0.9599 | 36.0705 | 0.9547 |
+| Xformer | 35.6892 | 0.9569 | 35.9011 | 0.9638 | 37.1932 | 0.9583 |
+| ASCNet | 35.3921 | 0.9542 | 35.3871 | 0.9605 | 37.1354 | 0.9559 |
+| MWDCNN | 34.1547 | 0.9489 | 32.9455 | 0.9556 | 35.6798 | 0.9519 |
+| NAFNet | 35.6424 | 0.9542 | 35.5733 | 0.9609 | 37.5481 | 0.9555 |
+| Restormer | 33.8069 | 0.9548 | 31.4327 | 0.9604 | 34.7396 | 0.9561 |
+| SwinIR | 34.9685 | 0.9527 | 33.3781 | 0.9580 | 36.7745 | 0.9471 |
+| FocalNet | 34.3702 | 0.9489 | 33.3989 | 0.9442 | 33.9343 | 0.9401 |
+| **ST-MambaIR** | **35.7587** | **0.9609** | **35.9270** | 0.9582 | **39.9128** | 0.9574 |
+
+## Citation
+
+If this repository is useful for your research, please cite:
+
+```bibtex
+@article{wang2026stmambair,
+  title={ST-MambaIR: Adaptive SuperToken State Space Modeling for Thermal Infrared Image Restoration},
+  author={Wang, Dongming and Mou, Xingang and Huang, Ze and Zhou, Xiao},
+  journal={IEEE Transactions on Image Processing},
+  year={2026}
 }
 ```
 
-> Xintao Wang, Liangbin Xie, Ke Yu, Kelvin C.K. Chan, Chen Change Loy and Chao Dong. BasicSR: Open Source Image and Video Restoration Toolbox. <https://github.com/xinntao/BasicSR>, 2022.
+## Acknowledgement
 
-## 📧 Contact
+This repository is developed on top of the BasicSR training framework. Framework files and third-party components retain their original licenses.
 
-If you have any questions, please email `xintao.alpha@gmail.com`, `xintao.wang@outlook.com`.
+## License
 
-<br>
-
-- **QQ群**: 扫描左边二维码 或者 搜索QQ群号: 320960100   入群答案：互帮互助共同进步
-- **微信群**: 我们的一群已经满500人啦，二群也超过200人了；进群可以添加 Liangbin 的个人微信 (右边二维码)，他会在空闲的时候拉大家入群~
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/17445847/134879983-6f2d663b-16e7-49f2-97e1-7c53c8a5f71a.jpg"  height="300">  &emsp;
-  <img src="https://user-images.githubusercontent.com/17445847/139572512-8e192aac-00fa-432b-ac8e-a33026b019df.png"  height="300">
-</p>
-
-![visitors](https://visitor-badge.glitch.me/badge?page_id=XPixelGroup/BasicSR) (start from 2022-11-06)
+Please see `LICENSE.txt` and `LICENSE/` for license details of the included framework and third-party components.
