@@ -142,8 +142,12 @@ Qualitative comparisons show that ST-MambaIR suppresses non-uniform noise and st
   <img src="assets/figures/图片5.png" alt="Qualitative comparison on public thermal infrared scenes" width="100%">
 </p>
 
+## Ablation Study
+
+The ablation visualization compares different model variants and shows the contribution of the proposed components to noise suppression and structural detail recovery.
+
 <p align="center">
-  <img src="assets/figures/图片7.png" alt="Qualitative comparison on WHT3H thermal infrared scenes" width="100%">
+  <img src="assets/figures/图片11.png" alt="Ablation study of ST-MambaIR components" width="100%">
 </p>
 
 ## Citation
