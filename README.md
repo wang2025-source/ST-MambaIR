@@ -9,7 +9,7 @@ ST-MambaIR is designed for thermal infrared image restoration under mixed degrad
 - **SuperToken-guided state space modeling**: dense pixel tokens are adaptively aggregated into compact region-level SuperTokens, enabling efficient global dependency modeling over content-aware infrared regions.
 - **Dual-granularity restoration**: a global SuperToken stream captures large-scale thermal distribution and non-uniformity, while a local pixel stream preserves fine-grained contours and textures.
 - **High-frequency residual refinement**: an additional refinement branch compensates weak edges and subtle thermal textures that may be smoothed during denoising.
-- **Thermal infrared evaluation**: experiments are conducted on HM-TIR, Rivadeneira2020, and WHT3H.
+- **Thermal infrared evaluation**: the model is trained on T234 and tested on HM-TIR, Rivadeneira2020, and WHT3H.
 
 ## Method Overview
 
@@ -43,11 +43,18 @@ Install the CUDA/PyTorch versions that match your local GPU environment before r
 
 ## Data Preparation
 
+The model is trained on the mixed T234 training set and evaluated on three thermal infrared test sets: HM-TIR, Rivadeneira2020, and WHT3H.
+
+Public dataset/source links:
+
+- HM-TIR: [https://github.com/Zihang-Chen/HM-TIR](https://github.com/Zihang-Chen/HM-TIR)
+- Rivadeneira2020: [Thermal Image Super-resolution: A Novel Architecture and Dataset](https://doi.org/10.5220/0008986201110119)
+
 Organize paired degraded and clean infrared images as follows:
 
 ```text
 datasets/
-  hm_tir/
+  t234/
     train/
       gt/
       noise/
@@ -56,16 +63,16 @@ datasets/
       noise/
 ```
 
-The default training configuration expects paired images under:
+For T234 training, set the paired image paths in the training option file to:
 
 ```text
-datasets/hm_tir/train/gt
-datasets/hm_tir/train/noise
-datasets/hm_tir/val/gt
-datasets/hm_tir/val/noise
+datasets/t234/train/gt
+datasets/t234/train/noise
+datasets/t234/val/gt
+datasets/t234/val/noise
 ```
 
-You can modify the dataset paths in `options/train/CUSTOM/*.yml` for HM-TIR, Rivadeneira2020, WHT3H, or your own thermal infrared dataset.
+For evaluation, prepare HM-TIR, Rivadeneira2020, and WHT3H as paired degraded/clean test sets and point the test option files to the corresponding directories. You can modify the dataset paths in `options/train/CUSTOM/*.yml` and your test option files for your local data layout.
 
 ## Training
 
@@ -75,7 +82,7 @@ Example:
 python basicsr/train.py -opt options/train/CUSTOM/fm3_multipole_focalnet_b2_hf_residual_hmtir_20k.yml
 ```
 
-The main configuration uses:
+The main training setup uses:
 
 - `model_type: MambaIRv2Model`
 - `network_g.type: MambaIRv2`
