@@ -150,18 +150,9 @@ The ablation visualization compares different model variants and shows the contr
   <img src="assets/figures/图片11.png" alt="Ablation study of ST-MambaIR components" width="100%">
 </p>
 
-## Citation
+## Contact
 
-If this repository is useful for your research, please cite:
-
-```bibtex
-@article{wang2026stmambair,
-  title={ST-MambaIR: Adaptive SuperToken State Space Modeling for Thermal Infrared Image Restoration},
-  author={Wang, Dongming and Mou, Xingang and Huang, Ze and Zhou, Xiao},
-  journal={IEEE Transactions on Image Processing},
-  year={2026}
-}
-```
+If you have any questions, please contact wangdongming@whut.edu.cn.
 
 ## Acknowledgement
 
