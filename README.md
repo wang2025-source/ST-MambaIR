@@ -4,6 +4,10 @@ Official code for **ST-MambaIR: Adaptive SuperToken State Space Modeling for The
 
 ST-MambaIR is designed for thermal infrared image restoration under mixed degradations, including low-frequency non-uniformity, stripe artifacts, random noise, and weakened structural details. The model combines focal context modulation, SuperToken-guided state space modeling, and high-frequency residual refinement to balance global thermal consistency, local structure preservation, and computational efficiency.
 
+<p align="center">
+  <img src="assets/figures/图片9.png" alt="SuperToken-guided state space modeling motivation" width="95%">
+</p>
+
 ## Highlights
 
 - **SuperToken-guided state space modeling**: dense pixel tokens are adaptively aggregated into compact region-level SuperTokens, enabling efficient global dependency modeling over content-aware infrared regions.
@@ -19,6 +23,16 @@ The restoration network follows a residual image restoration framework:
 2. Stacked SuperToken-guided State Space Blocks perform deep restoration.
 3. Each block uses focal context modulation, the SuperToken State-space Module, and high-frequency residual refinement.
 4. A lightweight reconstruction head predicts the residual image and adds it back to the degraded input.
+
+<p align="center">
+  <img src="assets/figures/图片2.png" alt="Overall architecture of ST-MambaIR" width="100%">
+</p>
+
+The SuperToken State-space Module adaptively routes dense pixel tokens into compact region-level SuperTokens for global state space modeling, while the pixel-token stream and high-frequency residual branch retain local edges, contours, and subtle thermal textures.
+
+<p align="center">
+  <img src="assets/figures/图片3.png" alt="SuperToken State-space Module and high-frequency residual branch" width="100%">
+</p>
 
 ## Repository Structure
 
@@ -115,6 +129,22 @@ The paper reports the following thermal infrared restoration results:
 | SwinIR | 34.9685 | 0.9527 | 33.3781 | 0.9580 | 36.7745 | 0.9471 |
 | FocalNet | 34.3702 | 0.9489 | 33.3989 | 0.9442 | 33.9343 | 0.9401 |
 | **ST-MambaIR** | **35.7587** | **0.9609** | **35.9270** | 0.9582 | **39.9128** | 0.9574 |
+
+## Visual Results
+
+Qualitative comparisons show that ST-MambaIR suppresses non-uniform noise and stripe artifacts while preserving weak thermal boundaries and local structures.
+
+<p align="center">
+  <img src="assets/figures/图片4.png" alt="Qualitative comparison on thermal infrared image restoration" width="100%">
+</p>
+
+<p align="center">
+  <img src="assets/figures/图片5.png" alt="Qualitative comparison on public thermal infrared scenes" width="100%">
+</p>
+
+<p align="center">
+  <img src="assets/figures/图片7.png" alt="Qualitative comparison on WHT3H thermal infrared scenes" width="100%">
+</p>
 
 ## Citation
 
