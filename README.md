@@ -65,7 +65,7 @@ Public dataset/source links:
 
 - T234: [Google Drive](https://drive.google.com/file/d/10jM3NxV17t9_vfnmk7o1-rfEBf2GQRwC/view?usp=drive_link)
 - HM-TIR: [https://github.com/Zihang-Chen/HM-TIR](https://github.com/Zihang-Chen/HM-TIR)
-- Rivadeneira2020: Thermal Image Super-resolution: A Novel Architecture and Dataset, VISAPP 2020
+- Rivadeneira2020: [Thermal Image Super-resolution: A Novel Architecture and Dataset, VISAPP 2020](https://github.com/yongsongH/Infrared_Image_SR_Survey/blob/main/README.md#L2195-L2203)
 - WHT3H: [Google Drive](https://drive.google.com/file/d/1J9mkhKT-h7ncw65RqJdGsTP-bjMOPEB9/view?usp=sharing)
 
 To augment the scale of training data and enhance scene diversity, we construct a mixed training dataset denoted as **T234**. It is aggregated from the training portions of HM-TIR, Rivadeneira2020, and WHT3H, contributing 1,200, 951, and 2,064 GT images, respectively. T234 contains 4,215 training images in total and covers diverse resolutions, device sources, and scene categories. This diversity gives the model broader thermal structural distributions and degradation patterns, improving its adaptability to complex infrared non-uniformity noise.
