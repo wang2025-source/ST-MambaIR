@@ -72,27 +72,11 @@ To augment the scale of training data and enhance scene diversity, we construct 
 
 ### Degradation Synthesis
 
-To construct paired degraded/clean samples, non-uniform thermal infrared degradations are synthesized from clean reference images. The degradation model simulates common infrared artifacts, including column-directional non-uniform responses, stripe perturbations, and intensity-dependent noise.
+Generate noisy infrared images from clean GT images before training/testing:
 
-For a clean image `I_GT` normalized to `[0, 1]`, four 1D noise vectors are generated along the width dimension and replicated along the height dimension to form column-directional noise templates `A1`, `A2`, `A3`, and `A4`:
-
-```text
-Ai(:, w) ~ N(0, beta_i^2),
-beta_i ~ U(0.05, 0.15),
-i = 1, 2, 3, 4.
+```bash
+python basicsr_scripts/add_noise_batch.py --in_dir datasets/t234/train/gt --out_dir datasets/t234/train/noise
 ```
-
-The degraded infrared image is synthesized as:
-
-```text
-I_LQ = Clip(
-  I_GT + A1 + A2 * I_GT + A3^2 * I_GT + A4^3 * I_GT,
-  0,
-  1
-)
-```
-
-Here, `A1` represents additive column-directional non-uniformity noise, `A2 * I_GT` denotes intensity-dependent linear response perturbation, and `A3^2 * I_GT` together with `A4^3 * I_GT` simulates more complex nonlinear response degradations. For grayscale thermal infrared images stored in RGB or ARGB containers, all valid RGB channels share the same noise templates to avoid introducing color perturbations. For fair comparison, degraded inputs are generated offline and saved persistently.
 
 Organize paired degraded and clean infrared images as follows:
 
