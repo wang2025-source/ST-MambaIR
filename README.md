@@ -70,6 +70,16 @@ Public dataset/source links:
 
 To augment the scale of training data and enhance scene diversity, we construct a mixed training dataset denoted as **T234**. It is aggregated from the training portions of HM-TIR, Rivadeneira2020, and WHT3H, contributing 1,200, 951, and 2,064 GT images, respectively. T234 contains 4,215 training images in total and covers diverse resolutions, device sources, and scene categories. This diversity gives the model broader thermal structural distributions and degradation patterns, improving its adaptability to complex infrared non-uniformity noise.
 
+### WHT3H Dataset
+
+**WHT3H** is our self-collected thermal infrared dataset. It contains 2,580 pristine infrared images with a resolution of 384 x 288, including 2,064 training images and 516 validation/testing images. The dataset covers four representative scene categories: building, dynamic, indoor, and nature. These scenes provide diverse thermal structures, object scales, and background distributions for evaluating infrared image restoration under practical non-uniform degradation.
+
+| Building | Dynamic | Indoor | Nature |
+| --- | --- | --- | --- |
+| <img src="assets/wht3h_samples/building_001.png" width="180"> | <img src="assets/wht3h_samples/dynamic_058.png" width="180"> | <img src="assets/wht3h_samples/indoor_014.png" width="180"> | <img src="assets/wht3h_samples/nature_422.png" width="180"> |
+| <img src="assets/wht3h_samples/building_004.png" width="180"> | <img src="assets/wht3h_samples/dynamic_059.png" width="180"> | <img src="assets/wht3h_samples/indoor_015.png" width="180"> | <img src="assets/wht3h_samples/nature_423.png" width="180"> |
+| <img src="assets/wht3h_samples/building_005.png" width="180"> | <img src="assets/wht3h_samples/dynamic_060.png" width="180"> | <img src="assets/wht3h_samples/indoor_018.png" width="180"> | <img src="assets/wht3h_samples/nature_424.png" width="180"> |
+
 ### Degradation Synthesis
 
 Generate noisy infrared images from clean GT images before training/testing:
