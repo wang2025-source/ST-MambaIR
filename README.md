@@ -40,6 +40,8 @@ The SuperToken State-space Module adaptively routes dense pixel tokens into comp
 basicsr/archs/mambairv2_arch.py      # main MambaIRv2/ST-MambaIR architecture implementation
 basicsr/models/mambairv2_model.py    # training/testing model wrapper
 options/train/CUSTOM/                # custom training configurations
+options/test/CUSTOM/                 # test configurations for the three evaluation datasets
+basicsr_scripts/                     # noise synthesis, batch validation, metrics, FLOPs, and visualization scripts
 scripts/                             # data preparation, evaluation, and utility scripts
 docs/                                # inherited framework documentation
 ```
@@ -61,8 +63,36 @@ The model is trained on the mixed T234 training set and evaluated on three therm
 
 Public dataset/source links:
 
+- T234: [Google Drive](https://drive.google.com/file/d/10jM3NxV17t9_vfnmk7o1-rfEBf2GQRwC/view?usp=drive_link)
 - HM-TIR: [https://github.com/Zihang-Chen/HM-TIR](https://github.com/Zihang-Chen/HM-TIR)
 - Rivadeneira2020: [Thermal Image Super-resolution: A Novel Architecture and Dataset](https://doi.org/10.5220/0008986201110119)
+- WHT3H: [Google Drive](https://drive.google.com/file/d/1J9mkhKT-h7ncw65RqJdGsTP-bjMOPEB9/view?usp=sharing)
+
+To augment the scale of training data and enhance scene diversity, we construct a mixed training dataset denoted as **T234**. It is aggregated from the training portions of HM-TIR, Rivadeneira2020, and WHT3H, contributing 1,200, 951, and 2,064 GT images, respectively. T234 contains 4,215 training images in total and covers diverse resolutions, device sources, and scene categories. This diversity gives the model broader thermal structural distributions and degradation patterns, improving its adaptability to complex infrared non-uniformity noise.
+
+### Degradation Synthesis
+
+To construct paired degraded/clean samples, non-uniform thermal infrared degradations are synthesized from clean reference images. The degradation model simulates common infrared artifacts, including column-directional non-uniform responses, stripe perturbations, and intensity-dependent noise.
+
+For a clean image `I_GT` normalized to `[0, 1]`, four 1D noise vectors are generated along the width dimension and replicated along the height dimension to form column-directional noise templates `A1`, `A2`, `A3`, and `A4`:
+
+```text
+Ai(:, w) ~ N(0, beta_i^2),
+beta_i ~ U(0.05, 0.15),
+i = 1, 2, 3, 4.
+```
+
+The degraded infrared image is synthesized as:
+
+```text
+I_LQ = Clip(
+  I_GT + A1 + A2 * I_GT + A3^2 * I_GT + A4^3 * I_GT,
+  0,
+  1
+)
+```
+
+Here, `A1` represents additive column-directional non-uniformity noise, `A2 * I_GT` denotes intensity-dependent linear response perturbation, and `A3^2 * I_GT` together with `A4^3 * I_GT` simulates more complex nonlinear response degradations. For grayscale thermal infrared images stored in RGB or ARGB containers, all valid RGB channels share the same noise templates to avoid introducing color perturbations. For fair comparison, degraded inputs are generated offline and saved persistently.
 
 Organize paired degraded and clean infrared images as follows:
 
@@ -87,6 +117,22 @@ datasets/t234/val/noise
 ```
 
 For evaluation, prepare HM-TIR, Rivadeneira2020, and WHT3H as paired degraded/clean test sets and point the test option files to the corresponding directories. You can modify the dataset paths in `options/train/CUSTOM/*.yml` and your test option files for your local data layout.
+
+## Utility Scripts
+
+Additional scripts are provided in `basicsr_scripts/`:
+
+These files include the non-uniform noise generation script and helper scripts with editable dataset paths, checkpoint paths, and training/testing configuration settings.
+
+| Script | Description |
+| --- | --- |
+| `add_noise_batch.py` | Generates paired noisy infrared images using the non-uniform degradation model described above. |
+| `batch_validation.py` | Runs batch validation across multiple datasets and model checkpoints. |
+| `eval_metrics.py` | Computes restoration metrics for evaluated results. |
+| `calculate_custom_flops.py` | Estimates model complexity and FLOPs. |
+| `plot_cluster.py` | Visualizes clustering/SuperToken-related results. |
+| `plot_cluster_v2.py` | Alternative visualization script for clustering/SuperToken analysis. |
+| `train.sh` | Batch training helper script for running multiple training configurations. |
 
 ## Training
 
