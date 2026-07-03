@@ -205,7 +205,3 @@ If you have any questions, please contact wangdongming@whut.edu.cn.
 ## Acknowledgement
 
 This repository is developed on top of the BasicSR training framework. Framework files and third-party components retain their original licenses.
-
-## License
-
-Please see `LICENSE.txt` and `LICENSE/` for license details of the included framework and third-party components.
