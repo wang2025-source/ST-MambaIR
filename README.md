@@ -59,7 +59,7 @@ Install the CUDA/PyTorch versions that match your local GPU environment before r
 
 ## Data Preparation
 
-The model is trained on the mixed T234 training set and evaluated on three thermal infrared test sets: HM-TIR, Rivadeneira2020, and WHT3H.
+The model is trained on the mixed T234 training set, validated with the HM-TIR validation set during training, and evaluated on three thermal infrared test sets: HM-TIR, Rivadeneira2020, and WHT3H.
 
 Public dataset/source links:
 
@@ -96,19 +96,22 @@ datasets/
     train/
       gt/
       noise/
+  hm_tir/
     val/
       gt/
       noise/
 ```
 
-For T234 training, set the paired image paths in the training option file to:
+For training, set the paired image paths in the training option file to:
 
 ```text
 datasets/t234/train/gt
 datasets/t234/train/noise
-datasets/t234/val/gt
-datasets/t234/val/noise
+datasets/hm_tir/val/gt
+datasets/hm_tir/val/noise
 ```
+
+T234 is used only as the training set. The validation split used during training is selected from HM-TIR.
 
 For evaluation, prepare HM-TIR, Rivadeneira2020, and WHT3H as paired degraded/clean test sets and point the test option files to the corresponding directories. You can modify the dataset paths in `options/train/CUSTOM/*.yml` and your test option files for your local data layout.
 
