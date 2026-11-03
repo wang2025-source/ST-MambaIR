@@ -37,14 +37,24 @@ The SuperToken State-space Module adaptively routes dense pixel tokens into comp
 ## Repository Structure
 
 ```text
-basicsr/archs/mambairv2_arch.py      # main MambaIRv2/ST-MambaIR architecture implementation
-basicsr/models/mambairv2_model.py    # training/testing model wrapper
-options/train/CUSTOM/                # custom training configurations
-options/test/CUSTOM/                 # test configurations for the three evaluation datasets
-basicsr_scripts/                     # noise synthesis, batch validation, metrics, FLOPs, and visualization scripts
-scripts/                             # data preparation, evaluation, and utility scripts
-docs/                                # inherited framework documentation
+basicsr/archs/mambairv2_arch.py       # ST-MambaIR network (registered as MambaIRv2)
+basicsr/archs/focalnet_arch.py        # focal modulation used by ST-MambaIR
+basicsr/models/mambairv2_model.py     # training/testing model wrapper
+basicsr/train.py                     # training entry point
+basicsr/test.py                      # testing entry point
+basicsr/data/                       # paired image loading and preprocessing
+basicsr/losses/                     # restoration losses
+basicsr/metrics/                    # restoration quality metrics
+basicsr/utils/                      # shared runtime utilities
+basicsr/ops/                        # operators referenced by framework helpers
+options/train/CUSTOM/               # paper-related training configurations
+options/test/CUSTOM/                # three-dataset evaluation configurations
+basicsr_scripts/                    # noise synthesis, evaluation, FLOPs, and visualization
+assets/                            # paper figures and WHT3H samples
+tests/                             # data, loss, and metric tests
 ```
+
+The repository retains ST-MambaIR and its training/testing dependencies. `arch_util.py`, `vgg_arch.py`, and the shared BasicSR modules support the retained framework code. Unrelated model implementations, example configurations, and upstream documentation have been removed.
 
 ## Installation
 
