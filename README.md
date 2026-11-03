@@ -108,7 +108,7 @@ For evaluation, prepare HM-TIR, Rivadeneira2020, and WHT3H as paired degraded/cl
 Example:
 
 ```bash
-python basicsr/train.py -opt options/train/CUSTOM/fm3_multipole_focalnet_b2_hf_residual_t234_200k_e104.yml
+python basicsr/train.py -opt options/train/CUSTOM/ST-MambaIR.yml
 ```
 
 The main training setup uses:
@@ -124,7 +124,7 @@ The main training setup uses:
 Use the BasicSR-style test entry after preparing a test option file and checkpoint:
 
 ```bash
-python basicsr/test.py -opt options/test/CUSTOM/FMMNet_t234_200k_three_datasets_test.yml
+python basicsr/test.py -opt options/test/CUSTOM/ST-MambaIR.yml
 ```
 
 Set `path.pretrain_network_g` in the option file to the checkpoint that you want to evaluate.

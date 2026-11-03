@@ -1,4 +1,4 @@
-name: FMMNet_t234_200k_three_datasets_test
+name: ST-MambaIR
 model_type: MambaIRv2Model
 scale: 1
 num_gpu: 1
@@ -51,7 +51,7 @@ network_g:
   resi_connection: 1conv
 
 path:
-  pretrain_network_g: experiments/fm3_multipole_focalnet_b2_hf_residual_t234_200k_e104/models/net_g_latest.pth
+  pretrain_network_g: experiments/ST-MambaIR/models/net_g_latest.pth
   strict_load_g: true
   resume_state: ~
 

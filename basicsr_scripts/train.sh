@@ -32,7 +32,7 @@ LAUNCHER="pytorch"
 # Add all .yml config file paths to this array
 # The script will execute them in this order
 declare -a TRAINING_CONFIGS=(
-    "options/train/CUSTOM/fm3_multipole_focalnet_b2_hf_residual_t234_200k_e104.yml"
+    "options/train/CUSTOM/ST-MambaIR.yml"
 )
 
 # --- 3. Pre-run Checks and Counters ---

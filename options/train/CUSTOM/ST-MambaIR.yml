@@ -1,4 +1,4 @@
-name: fm3_multipole_focalnet_b2_hf_residual_t234_200k_e104
+name: ST-MambaIR
 model_type: MambaIRv2Model
 scale: 1
 num_gpu: 1
