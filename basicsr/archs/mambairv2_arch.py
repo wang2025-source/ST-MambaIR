@@ -1235,34 +1235,3 @@ class MambaIRv2(nn.Module):
         x = x[..., :h_ori * self.upscale, :w_ori * self.upscale]
 
         return x
-
-
-
-if __name__ == '__main__':
-    upscale = 4
-    model = MambaIRv2(
-        upscale=2,
-        img_size=64,
-        embed_dim=48,
-        d_state=8,
-        depths=[5, 5, 5, 5],
-        num_heads=[4, 4, 4, 4],
-        window_size=16,
-        inner_rank=32,
-        num_tokens=64,
-        convffn_kernel_size=5,
-        img_range=1.,
-        mlp_ratio=1.,
-        upsampler='pixelshuffledirect').cuda()
-
-    # Model Size
-    total = sum([param.nelement() for param in model.parameters()])
-    print("Number of parameter: %.3fM" % (total / 1e6))
-    trainable_num = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    print(trainable_num)
-
-    # Test
-    _input = torch.randn([2, 3, 64, 64]).cuda()
-    output = model(_input).cuda()
-    print(output.shape)
-

@@ -1,25 +1,10 @@
-# License and Acknowledgement
+# Third-Party License Notices
 
-This BasicSR project is released under the Apache 2.0 license.
+These notices apply to retained source components, not to authorship of the ST-MambaIR paper.
 
-- StyleGAN2
-  - The codes are modified from the repository [stylegan2-pytorch](https://github.com/rosinality/stylegan2-pytorch). Many thanks to the author - [Kim Seonghyeon](https://rosinality.github.io/)  :blush: for translating from the official TensorFlow codes to PyTorch ones. Here is the [license](LICENSE-stylegan2-pytorch) of stylegan2-pytorch.
-  - The official repository is <https://github.com/NVlabs/stylegan2>, and here is the [NVIDIA license](./LICENSE-NVIDIA).
-- DFDNet
-  - The codes are largely modified from the repository [DFDNet](https://github.com/csxmli2016/DFDNet). Their license is [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
-- DiffJPEG
-  - Modified from <https://github.com/mlomnitz/DiffJPEG>.
-- [pytorch-image-models](https://github.com/rwightman/pytorch-image-models/)
-  - We use the implementation of `DropPath` and `trunc_normal_` from [pytorch-image-models](https://github.com/rwightman/pytorch-image-models/). The LICENSE is included as [LICENSE_pytorch-image-models](LICENSE/LICENSE_pytorch-image-models).
-- [SwinIR](https://github.com/JingyunLiang/SwinIR)
-  - The arch implementation of SwinIR is from [SwinIR](https://github.com/JingyunLiang/SwinIR). The LICENSE is included as [LICENSE_SwinIR](LICENSE/LICENSE_SwinIR).
-- [ECBSR](https://github.com/xindongzhang/ECBSR)
-  - The arch implementation of ECBSR is from [ECBSR](https://github.com/xindongzhang/ECBSR). The LICENSE of ECBSR is [Apache License 2.0](https://github.com/xindongzhang/ECBSR/blob/main/LICENSE)
+- BasicSR framework utilities: Apache-2.0; see [LICENSE.txt](../LICENSE.txt). Source: https://github.com/XPixelGroup/BasicSR.
+- FocalModulation: retained from Microsoft FocalNet under the MIT license; see [LICENSE-FocalNet](LICENSE-FocalNet). The classification networks and pretrained model definitions are not included. Source: https://github.com/microsoft/FocalNet.
+- Initialization helpers: retained from pytorch-image-models; see [LICENSE_pytorch-image-models](LICENSE_pytorch-image-models).
+- Inherited window-based restoration components: the existing [LICENSE_SwinIR](LICENSE_SwinIR) is retained for the source components used by the restoration implementation.
 
-## References
-
-1. NIQE metric: the codes are translated from the [official MATLAB codes](http://live.ece.utexas.edu/research/quality/niqe_release.zip)
-
-    > A. Mittal, R. Soundararajan and A. C. Bovik, "Making a Completely Blind Image Quality Analyzer", IEEE Signal Processing Letters, 2012.
-
-1. FID metric: the codes are modified from [pytorch-fid](https://github.com/mseitzer/pytorch-fid) and [stylegan2-pytorch](https://github.com/rosinality/stylegan2-pytorch).
+Original notices in retained source files remain in place.

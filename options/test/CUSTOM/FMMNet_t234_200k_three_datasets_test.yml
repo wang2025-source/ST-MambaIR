@@ -8,8 +8,8 @@ datasets:
   test_1:
     name: HM-TIR
     type: PairedImageDataset
-    dataroot_gt: /root/autodl-tmp/datasets/hm_tir/val/gt
-    dataroot_lq: /root/autodl-tmp/datasets/hm_tir/val/noise
+    dataroot_gt: datasets/hm_tir/val/gt
+    dataroot_lq: datasets/hm_tir/val/noise
     filename_tmpl: '{}'
     io_backend:
       type: disk
@@ -17,8 +17,8 @@ datasets:
   test_2:
     name: Rivadeneira2020
     type: PairedImageDataset
-    dataroot_gt: /root/autodl-tmp/datasets/Rivadeneira2020/val/gt
-    dataroot_lq: /root/autodl-tmp/datasets/Rivadeneira2020/val/noise
+    dataroot_gt: datasets/Rivadeneira2020/val/gt
+    dataroot_lq: datasets/Rivadeneira2020/val/noise
     filename_tmpl: '{}'
     io_backend:
       type: disk
@@ -26,8 +26,8 @@ datasets:
   test_3:
     name: WHT3H
     type: PairedImageDataset
-    dataroot_gt: /root/autodl-tmp/datasets/WHT3H/val/gt
-    dataroot_lq: /root/autodl-tmp/datasets/WHT3H/val/noise
+    dataroot_gt: datasets/WHT3H/val/gt
+    dataroot_lq: datasets/WHT3H/val/noise
     filename_tmpl: '{}'
     io_backend:
       type: disk
@@ -51,7 +51,7 @@ network_g:
   resi_connection: 1conv
 
 path:
-  pretrain_network_g: /root/autodl-tmp/code/BasicSR-exp-fm3-b2-noprompt-hf-residual-mf/experiments/fm3_multipole_focalnet_b2_hf_residual_t234_200k_e104/models/net_g_latest.pth
+  pretrain_network_g: experiments/fm3_multipole_focalnet_b2_hf_residual_t234_200k_e104/models/net_g_latest.pth
   strict_load_g: true
   resume_state: ~
 

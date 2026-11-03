@@ -176,7 +176,3 @@ The ablation visualization compares different model variants and shows the contr
 ## Contact
 
 If you have any questions, please contact wangdongming@whut.edu.cn.
-
-## Acknowledgement
-
-This repository is developed on top of the BasicSR training framework. Framework files and third-party components retain their original licenses.

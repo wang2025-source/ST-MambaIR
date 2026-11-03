@@ -7,10 +7,10 @@ find_unused_parameters: true
 
 datasets:
   train:
-    name: hm_tir
+    name: t234
     type: PairedImageDataset
-    dataroot_gt: /root/autodl-tmp/datasets/t234/gt
-    dataroot_lq: /root/autodl-tmp/datasets/t234/noise
+    dataroot_gt: datasets/t234/train/gt
+    dataroot_lq: datasets/t234/train/noise
     filename_tmpl: '{}'
     io_backend:
       type: disk
@@ -26,8 +26,8 @@ datasets:
   val:
     name: hm_tir_val
     type: PairedImageDataset
-    dataroot_gt: /root/autodl-tmp/datasets/hm_tir/val/gt
-    dataroot_lq: /root/autodl-tmp/datasets/hm_tir/val/noise
+    dataroot_gt: datasets/hm_tir/val/gt
+    dataroot_lq: datasets/hm_tir/val/noise
     io_backend:
       type: disk
 
