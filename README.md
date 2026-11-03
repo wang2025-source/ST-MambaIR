@@ -34,28 +34,6 @@ The SuperToken State-space Module adaptively routes dense pixel tokens into comp
   <img src="assets/figures/图片3.png" alt="SuperToken State-space Module and high-frequency residual branch" width="100%">
 </p>
 
-## Repository Structure
-
-```text
-basicsr/archs/mambairv2_arch.py       # ST-MambaIR network (registered as MambaIRv2)
-basicsr/archs/focalnet_arch.py        # focal modulation used by ST-MambaIR
-basicsr/models/mambairv2_model.py     # training/testing model wrapper
-basicsr/train.py                     # training entry point
-basicsr/test.py                      # testing entry point
-basicsr/data/                       # paired image loading and preprocessing
-basicsr/losses/                     # restoration losses
-basicsr/metrics/                    # restoration quality metrics
-basicsr/utils/                      # shared runtime utilities
-basicsr/ops/                        # operators referenced by framework helpers
-options/train/CUSTOM/               # paper-related training configurations
-options/test/CUSTOM/                # three-dataset evaluation configurations
-basicsr_scripts/                    # noise synthesis, evaluation, FLOPs, and visualization
-assets/                            # paper figures and WHT3H samples
-tests/                             # data, loss, and metric tests
-```
-
-The repository retains ST-MambaIR and its training/testing dependencies. `arch_util.py`, `vgg_arch.py`, and the shared BasicSR modules support the retained framework code. Unrelated model implementations, example configurations, and upstream documentation have been removed.
-
 ## Installation
 
 ```bash
@@ -124,22 +102,6 @@ datasets/hm_tir/val/noise
 T234 is used only as the training set. The validation split used during training is selected from HM-TIR.
 
 For evaluation, prepare HM-TIR, Rivadeneira2020, and WHT3H as paired degraded/clean test sets and point the test option files to the corresponding directories. You can modify the dataset paths in `options/train/CUSTOM/*.yml` and your test option files for your local data layout.
-
-## Utility Scripts
-
-Additional scripts are provided in `basicsr_scripts/`:
-
-These files include the non-uniform noise generation script and helper scripts with editable dataset paths, checkpoint paths, and training/testing configuration settings.
-
-| Script | Description |
-| --- | --- |
-| `add_noise_batch.py` | Generates paired noisy infrared images using the non-uniform degradation model described above. |
-| `batch_validation.py` | Runs batch validation across multiple datasets and model checkpoints. |
-| `eval_metrics.py` | Computes restoration metrics for evaluated results. |
-| `calculate_custom_flops.py` | Estimates model complexity and FLOPs. |
-| `plot_cluster.py` | Visualizes clustering/SuperToken-related results. |
-| `plot_cluster_v2.py` | Alternative visualization script for clustering/SuperToken analysis. |
-| `train.sh` | Batch training helper script for running multiple training configurations. |
 
 ## Training
 
